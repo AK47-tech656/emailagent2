@@ -1,0 +1,47 @@
+Metadata-Version: 2.4
+Name: emailagent
+Version: 0.1.0
+Summary: Advanced Email Triage OpenEnv
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: pydantic
+Requires-Dist: openai
+Requires-Dist: requests
+Requires-Dist: tenacity
+
+---
+title: Emailagent
+emoji: 🚀
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+# Advanced Email Triage OpenEnv
+
+## Description and Motivation
+This environment simulates a realistic customer support triage system. AI agents must read incoming customer emails, reason about their intent, and route them to the correct department with the appropriate priority. It moves beyond simple text classification by requiring a "Chain-of-Thought" reasoning step before action, simulating how a real human agent processes complex, multi-intent, or adversarial customer queries.
+
+## Action and Observation Space
+* **Observation Space:** A structured JSON object containing:
+  * `current_email`: The dictionary containing the email's ID, subject, and body.
+  * `emails_remaining`: Integer representing the queue length.
+  * `feedback`: Dense reward feedback from the previous step.
+* **Action Space:** A typed Pydantic model requiring:
+  * `email_id`: To ensure synchronous processing.
+  * `chain_of_thought`: Mandatory reasoning string to prevent zero-shot hallucination.
+  * `department`: Categorical (sales, support, billing, spam).
+  * `priority`: Categorical (low, normal, high, critical).
+
+## Tasks & Difficulty Progression
+1. **Easy:** 3 straightforward emails with single, obvious intents (e.g., standard password resets, obvious spam).
+2. **Medium:** 4 emails requiring basic context extraction (e.g., bug reports, double-charge complaints needing high priority).
+3. **Hard:** 3 complex emails including multi-intent ambiguity, VIP SLA rules (e.g., system outages overriding sales inquiries), and direct prompt injection attempts ("Ignore previous instructions").
+
+## Setup and Usage Instructions
+1. **Local Setup:** Install dependencies via `pip install -r requirements.txt`.
+2. **Run Server:** Execute `uvicorn server:app --host 0.0.0.0 --port 7860`.
+3. **Docker Execution:** ```bash
+   docker build -t email-env .

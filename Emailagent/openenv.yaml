@@ -1,0 +1,4 @@
+name: "AkEmailTriageEnv"
+version: "2.0.0"
+description: "An advanced email triage environment requiring Chain-of-Thought reasoning for complex customer support routing."
+tags: ["nlp", "agent-reasoning", "customer-support", "routing"]
